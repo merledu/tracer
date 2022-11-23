@@ -1,2 +1,2 @@
-# tracer
+# Tracer
 CHISEL based RVFI Tracer
