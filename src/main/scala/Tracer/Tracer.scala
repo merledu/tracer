@@ -20,34 +20,33 @@ class Tracer(Params:Map[String,Int]) extends Module {
     val clkCycle: UInt = RegInit(0.U(Params("XLEN").W))
     clkCycle := clkCycle + 1.U
 
-    // Instruction Metadata
-    // - rvfi_valid -> rvfiBoolVec(0)
-    // - rvfi_insn  -> rvfiUIntVec(0)
-    // - rvfi_mode  -> rvfi_mode
+    val rvfiUIntWires: Map[String, UInt] = Map(
+        "insn"     -> io.rvfiUIntVec(0),
+        "pc_rdata" -> io.rvfiUIntVec(1),
+        "pc_wdata" -> io.rvfiUIntVec(2),
+        "mem_addr" -> io.rvfiUIntVec(3),
+        "rd_addr"  -> io.rvfiRegAddrVec(0),
+        "rs1_addr" -> io.rvfiRegAddrVec(1),
+        "rs2_addr" -> io.rvfiRegAddrVec(2),
+        "mode"     -> io.rvfi_mode
+    )
+    val rvfiSIntWires: Map[String, SInt] = Map(
+        "rd_wdata"  -> io.rvfiSIntVec(0),
+        "rs1_rdata" -> io.rvfiSIntVec(1),
+        "rs2_rdata" -> io.rvfiSIntVec(2),
+        "mem_rdata" -> io.rvfiSIntVec(3),
+        "mem_wdata" -> io.rvfiSIntVec(4)
+    )
+    val rvfiBoolWires: Map[String, Bool] = Map(
+        "valid" -> io.rvfiBoolVec(0)
+    )
 
-    // Register Read/Write
-    // - rvfi_rd_addr   -> rvfiRegAddrVec(0)
-    // - rvfi_rs1_addr  -> rvfiRegAddrVec(1)
-    // - rvfi_rs2_addr  -> rvfiRegAddrVec(2)
-    // - rvfi_rd_wdata  -> rvfiSIntVec(0)
-    // - rvfi_rs1_rdata -> rvfiSIntVec(1)
-    // - rvfi_rs2_rdata -> rvfiSIntVec(2)
-
-    // Program Counter
-    // - rvfi_pc_rdata -> rvfiUIntVec(1)
-    // - rvfi_pc_wdata -> rvfiUIntVec(2)
-
-    // Memory Access
-    // - rvfi_mem_addr  -> rvfiUIntVec(3)
-    // - rvfi_mem_rdata -> rvfiSIntVec(3)
-    // - rvfi_mem_wdata -> rvfiSIntVec(4)
-
-    when (io.rvfiBoolVec(0)) {
+    when (rvfiBoolWires("valid")) {
         printf(
             "ClkCycle: %d, pc_rdata: %x, pc_wdata: %x, insn: %x, mode: %d, rs1_addr: %d, rs1_rdata: %x, rs2_addr: %d, rs2_rdata: %x, rd_addr: %d, rd_wdata: %x, mem_addr: %x, mem_rdata: %x, mem_wdata: %x\n",
-            clkCycle,             io.rvfiUIntVec(1), io.rvfiUIntVec(2),    io.rvfiUIntVec(0), io.rvfi_mode,
-            io.rvfiRegAddrVec(1), io.rvfiSIntVec(1), io.rvfiRegAddrVec(2), io.rvfiSIntVec(2), io.rvfiRegAddrVec(0),
-            io.rvfiSIntVec(0),    io.rvfiUIntVec(3), io.rvfiSIntVec(3),    io.rvfiSIntVec(4)
+            clkCycle, rvfiUIntWires("pc_rdata"), rvfiUIntWires("pc_wdata"), rvfiUIntWires("insn"), rvfiUIntWires("mode"),
+            rvfiUIntWires("rs1_addr"), rvfiSIntWires("rs1_rdata"), rvfiUIntWires("rs2_addr"), rvfiSIntWires("rs2_rdata"), rvfiUIntWires("rd_addr"),
+            rvfiSIntWires("rd_wdata"), rvfiUIntWires("mem_addr"), rvfiSIntWires("mem_rdata"), rvfiSIntWires("mem_wdata")
         )
     }
 }
