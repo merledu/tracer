@@ -2,8 +2,6 @@ package Tracer
 
 import chisel3._
 
-import Params._
-
 
 class TracerIO(Params:Map[String,Int]) extends Bundle {
     // Inputs
