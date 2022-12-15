@@ -6,5 +6,5 @@ import Params._
 
 
 class TracerTop extends Module {
-    val tracer: Tracer = Module(new Tracer(Params.default))
+    val tracer: TraceUnit = Module(new TraceUnit(Params.default))
 }

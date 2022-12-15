@@ -13,7 +13,7 @@ class TracerIO(Params:Map[String,Int]) extends Bundle {
 }
 
 
-class Tracer(Params:Map[String,Int]) extends Module {
+class TraceUnit(Params:Map[String,Int]) extends Module {
     val io: TracerIO = IO(new TracerIO(Params))
     val clkCycle: UInt = RegInit(0.U(Params("XLEN").W))
     clkCycle := clkCycle + 1.U
