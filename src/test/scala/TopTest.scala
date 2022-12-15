@@ -2,7 +2,7 @@ package Tracer
 
 import chisel3._
 import chiseltest._
-import org.scalatest._
+import org.scalatest.freespec.AnyFreeSpec
 
 
 class TopTest extends AnyFreeSpec with ChiselScalatestTester {
