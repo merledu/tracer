@@ -1,21 +1,23 @@
-package Tracer
+package tracer
 
 import chisel3._
+import configs.Configs
 
 
-class TracerIO(Params:Map[String,Int]) extends Bundle {
+class TracerIO extends Bundle with Configs {
     // Inputs
-    val rvfiUIntVec    : Vec[UInt] = Input(Vec(4, UInt(Params("XLEN").W)))
-    val rvfiRegAddrVec : Vec[UInt] = Input(Vec(3, UInt(Params("RegAddrLen").W)))
-    val rvfiSIntVec    : Vec[SInt] = Input(Vec(5, SInt(Params("XLEN").W)))
-    val rvfiBoolVec    : Vec[Bool] = Input(Vec(1, Bool()))
-    val rvfi_mode      : UInt      = Input(UInt(2.W))
+    val rvfiUIntVec    = Input(Vec(4, UInt(XLEN.W)))
+    val rvfiRegAddrVec = Input(Vec(3, UInt(REG_ADDR_WIDTH.W)))
+    val rvfiSIntVec    = Input(Vec(5, SInt(XLEN.W)))
+    val rvfiBoolVec    = Input(Vec(1, Bool()))
+    val rvfi_mode      = Input(UInt(2.W))
 }
 
 
-class TraceUnit(Params:Map[String,Int]) extends Module {
-    val io: TracerIO = IO(new TracerIO(Params))
-    val clkCycle: UInt = RegInit(0.U(Params("XLEN").W))
+class TraceUnit(M: Boolean, C: Boolean, F: Boolean) extends Module with Configs {
+    val io: TracerIO = IO(new TracerIO)
+
+    val clkCycle = RegInit(0.U(XLEN.W))
     clkCycle := clkCycle + 1.U
 
     val rvfiUIntWires: Map[String, UInt] = Map(
