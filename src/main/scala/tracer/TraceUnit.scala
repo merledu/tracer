@@ -29,14 +29,30 @@ class TraceUnit(M: Boolean, C: Boolean, F: Boolean) extends Module with Configs 
         "rs1_addr" -> io.rvfiRegAddrVec(1),
         "rs2_addr" -> io.rvfiRegAddrVec(2),
         "mode"     -> io.rvfi_mode
-    )
+    ) ++ (if (M) Map(
+
+    ) else Map(
+
+    )) ++ (if (C) Map(
+
+    ) else Map()) ++ (if (F) Map(
+
+    ) else Map())
+
     val rvfiSIntWires: Map[String, SInt] = Map(
         "rd_wdata"  -> io.rvfiSIntVec(0),
         "rs1_rdata" -> io.rvfiSIntVec(1),
         "rs2_rdata" -> io.rvfiSIntVec(2),
         "mem_rdata" -> io.rvfiSIntVec(3),
         "mem_wdata" -> io.rvfiSIntVec(4)
-    )
+    ) ++ (if (M) Map(
+
+    ) else Map()) ++ (if (C) Map(
+
+    ) else Map()) ++ (if (F) Map(
+
+    ) else Map())
+
     val rvfiBoolWires: Map[String, Bool] = Map(
         "valid" -> io.rvfiBoolVec(0)
     )
